@@ -1,9 +1,10 @@
 import requests
 import time
-# from parsel import Selector
+from parsel import Selector
 
 
-def fetch(url):
+# Requisito 1
+def fetch(url: str) -> str:
     try:
         time.sleep(1)
 
@@ -20,8 +21,14 @@ def fetch(url):
 
 
 # Requisito 2
-def scrape_updates(html_content):
-    pass
+def scrape_updates(html_content: str) -> list:
+    try:
+        selector = Selector(html_content)
+        url_news = selector.css("a.cs-overlay-link::attr(href)").getall()
+        # warning getattr() it will be used in next release
+        return url_news
+    except url_news == []:
+        return []
 
 
 # Requisito 3
