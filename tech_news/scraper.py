@@ -1,6 +1,16 @@
-# Requisito 1
+import requests
+import time
+
+
 def fetch(url):
-    pass
+    response = requests.get(url)
+    time.sleep(1)
+    if (response.status_code == 200):
+        return response.text
+    elif (response.status_code != 200):
+        return None
+    elif (requests.Timeout >= 3):
+        return None
 
 
 # Requisito 2
