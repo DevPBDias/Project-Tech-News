@@ -32,8 +32,14 @@ def scrape_updates(html_content: str) -> list:
 
 
 # Requisito 3
-def scrape_next_page_link(html_content):
-    pass
+def scrape_next_page_link(html_content: str) -> str:
+    try:
+        selector = Selector(html_content)
+        next_page_btn = selector.css(
+            "a.next.page-numbers::attr(href)").get()
+        return next_page_btn
+    except next_page_btn is None:
+        return None
 
 
 # Requisito 4
