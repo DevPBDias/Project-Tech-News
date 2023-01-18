@@ -1,16 +1,22 @@
 import requests
 import time
+# from parsel import Selector
 
 
 def fetch(url):
-    response = requests.get(url)
-    time.sleep(1)
-    if (response.status_code == 200):
+    try:
+        time.sleep(1)
+
+        response = requests.get(
+            url,
+            timeout=2,
+            headers={"user-agent": "Fake user-agent"})
+
+        response.raise_for_status()
+    except (requests.HTTPError, requests.ReadTimeout):
+        return None
+    else:
         return response.text
-    elif (response.status_code != 200):
-        return None
-    elif (requests.Timeout >= 3):
-        return None
 
 
 # Requisito 2
