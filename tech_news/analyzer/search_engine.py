@@ -37,7 +37,17 @@ def search_by_date(date):
 
 # Requisito 8
 def search_by_tag(tag):
-    pass
+    try:
+        news = search_news({"tags": {"$regex": tag, "$options": "i"}})
+        info = []
+
+        for item in news:
+            info.append((item["title"], item["url"]))
+
+        return info
+
+    except news is None:
+        return []
 
 
 # Requisito 9
