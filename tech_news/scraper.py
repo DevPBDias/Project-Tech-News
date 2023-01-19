@@ -1,6 +1,7 @@
 import requests
 import time
 from parsel import Selector
+from tech_news.database import create_news
 
 
 # Requisito 1
@@ -75,4 +76,27 @@ def scrape_news(html_content: str) -> dict:
 
 # Requisito 5
 def get_tech_news(amount):
-    pass
+    # https://developers.google.com/edu/python/lists
+    base_url = "https://blog.betrybe.com"
+    data_db_latest_news = []
+    content = fetch(base_url)
+    next_page_url = scrape_next_page_link(content)
+    url_news = scrape_updates(content)
+
+    try:
+        while len(url_news) < amount:
+            next_content = fetch(next_page_url)
+            next_page_url = scrape_next_page_link(next_content)
+            next_page_news = scrape_updates(next_content)
+            url_news.extend(next_page_news)
+
+        for new_base_url in url_news[0:amount]:
+            new_content = fetch(new_base_url)
+            new_news = scrape_news(new_content)
+            data_db_latest_news.append(new_news)
+
+        create_news(data_db_latest_news)
+
+        return data_db_latest_news
+    except data_db_latest_news is None:
+        return None
