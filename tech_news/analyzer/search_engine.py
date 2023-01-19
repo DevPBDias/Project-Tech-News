@@ -52,4 +52,14 @@ def search_by_tag(tag):
 
 # Requisito 9
 def search_by_category(category):
-    pass
+    try:
+        news = search_news({"category": {"$regex": category, "$options": "i"}})
+        info = []
+
+        for item in news:
+            info.append((item["title"], item["url"]))
+
+        return info
+
+    except news is None:
+        return []
